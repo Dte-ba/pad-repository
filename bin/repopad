@@ -1,10 +1,9 @@
 #!/usr/bin/env node
 
-/*!
- * Pad Repository
+ /*!
+ * This file is part of PAD-Repository
  *
- * Copyright(c) 2013-2014 Dirección de Tecnología Educativa de Buenos Aires (Dte-ba)
- * GPL Plublic License v3
+ * Please see the LICENSE file
  */
 
 var fs = require('fs')
@@ -17,7 +16,7 @@ var usage = [
     ''
   , '  PAD repository manager'
   , ''
-  , '  Usage: pad-repository <command> <path>|<filename>'
+  , '  Usage: repopad <command> <path>|<filename>'
   , ''
   , '  where <command> is one of:'
   , '        init cache clear check show watch status add'
@@ -41,7 +40,7 @@ var _path = '.';
 
 /**
  * An action to call 
- *    like: init, cache, clear, check, status
+ *    like: init, cache, clear, check, status, serve
  */
 var action = ''
 
@@ -59,6 +58,11 @@ var withCreate = false;
  * Buffer size
  */
 var bufferSize = 5;
+
+/**
+ * Serve port
+ */
+var port = 5;
 
 /*
  * Proccess arguments
@@ -118,13 +122,19 @@ while (args.length) {
     case 'add':
       action = 'add';
       break;
+    case 'serve':
+      action = 'serve';
+      (args.length) 
+        ? (port = parseInt(args.shift()))
+        : cmd.abort('serve requires an argument (port)');
+      break;
     default:
       _path = arg;
   }
 }
 
 // check the action
-if ( !(/^(init|cache|clear|check|show|watch|status|add)$/i).test(action) ) {
+if ( !(/^(init|cache|clear|check|show|watch|status|add|serve)$/i).test(action) ) {
   console.log('the action `' + action + '` was not found.');
   cmd.abort(usage);
 }
@@ -135,7 +145,8 @@ var options = {
   path: _path ,
   withForce: withForce,
   bufferSize: bufferSize,
-  withCreate: withCreate
+  withCreate: withCreate,
+  port: port
 };
 
 // just do it
@@ -166,7 +177,8 @@ var options = {
       opsP = {
         path: ops.path,
         withForce: ops.withForce,
-        bufferSize: ops.bufferSize
+        bufferSize: ops.bufferSize,
+        port: ops.port
       };
 
   repo[action].apply(repo, [opsP, endfn]);
