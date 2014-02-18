@@ -29,6 +29,10 @@
     "underscore": "~1.6.0",
     "custom-logger": "~0.2.1",
     "async": "~0.2.10",
-    "chokidar": "~0.8.1"
+    "chokidar": "~0.8.1",
+    "adm-zip": "~0.4.4"
+  },
+  "devDependencies": {
+    "express": "~3.4.8"
   }
 }
