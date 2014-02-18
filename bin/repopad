@@ -20,13 +20,14 @@ var usage = [
   , '  Usage: pad-repository <command> <path>|<filename>'
   , ''
   , '  where <command> is one of:'
-  , '        init cache clear check show watch'
+  , '        init cache clear check show watch status add'
   , ''
   , ' Actions:'
   , ''
   , '    -v, --version             Display a version of pad-repository'
   , '    -h, --help                Display this text'
   , '    -f, --force               Force the command'
+  , '    -c, --create              With create'
   , '    --buffer-size             The buffer size to procces packages (5 as default)'
   , ''
 ].join('\n');
@@ -40,7 +41,7 @@ var _path = '.';
 
 /**
  * An action to call 
- *    like: init, cache, clear, check
+ *    like: init, cache, clear, check, status
  */
 var action = ''
 
@@ -48,6 +49,11 @@ var action = ''
  * Override flag
  */
 var withForce = false;
+
+/**
+ * Create flag
+ */
+var withCreate = false;
 
 /**
  * Buffer size
@@ -78,6 +84,10 @@ while (args.length) {
     case '--force':
       withForce = true;
       break;
+    case '-c':
+    case '--create':
+      withCreate = true;
+      break;
     case '--buffer-size':
       withForce = true;
       (args.length) 
@@ -102,13 +112,19 @@ while (args.length) {
     case 'show':
       action = 'show';
       break;
+    case 'status':
+      action = 'status';
+      break;
+    case 'add':
+      action = 'add';
+      break;
     default:
       _path = arg;
   }
 }
 
 // check the action
-if ( !(/^(init|cache|clear|check|show|watch)$/i).test(action) ) {
+if ( !(/^(init|cache|clear|check|show|watch|status|add)$/i).test(action) ) {
   console.log('the action `' + action + '` was not found.');
   cmd.abort(usage);
 }
@@ -118,7 +134,8 @@ var options = {
   action: action,
   path: _path ,
   withForce: withForce,
-  bufferSize: bufferSize
+  bufferSize: bufferSize,
+  withCreate: withCreate
 };
 
 // just do it
@@ -152,29 +169,6 @@ var options = {
         bufferSize: ops.bufferSize
       };
 
-  switch (action) {
-  case 'init':
-    befn = repo.init;
-  break;
-  case 'check':
-    befn = repo.check;
-  break;
-  case 'watch':
-    befn = repo.watch;
-  break;
-  case 'cache':
-    befn = repo.cache;
-  break;
-  case 'clear':
-    befn = repo.clear;
-  break;
-  case 'show':
-    befn = repo.show;
-  break;
-  default:
-    cmd.abort('Oop! the action `' + action + '` was not expected.');
-  }
-
-  befn.apply(repo, [opsP, endfn]);
+  repo[action].apply(repo, [opsP, endfn]);
   
 })(repository, options)
