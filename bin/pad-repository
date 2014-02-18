@@ -96,6 +96,12 @@ while (args.length) {
     case 'cache':
       action = 'cache';
       break;
+    case 'clear':
+      action = 'clear';
+      break;
+    case 'show':
+      action = 'show';
+      break;
     default:
       _path = arg;
   }
@@ -133,8 +139,10 @@ var options = {
      var _ends = new Date();
      var diff = _ends - _init;
 
-     console.log('');
-     console.log('complete on', diff, 'miliseconds');
+     if (!repo.isWatching) {
+      console.log('');
+      console.log('complete on', diff, 'miliseconds'); 
+     }
   };
 
   var action = ops.action,
@@ -156,6 +164,12 @@ var options = {
   break;
   case 'cache':
     befn = repo.cache;
+  break;
+  case 'clear':
+    befn = repo.clear;
+  break;
+  case 'show':
+    befn = repo.show;
   break;
   default:
     cmd.abort('Oop! the action `' + action + '` was not expected.');
