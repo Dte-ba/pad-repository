@@ -1,0 +1,23 @@
+{
+  "name": "pad-repository",
+  "version": "0.0.0",
+  "description": "Repositorio de paquetes para la plataforma PAD",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Dte-ba/pad-repository.git"
+  },
+  "keywords": [
+    "PAD",
+    "repository"
+  ],
+  "author": "Dte-ba https://github.com/Dte-ba",
+  "license": "GPL v3",
+  "bugs": {
+    "url": "https://github.com/Dte-ba/pad-repository/issues"
+  },
+  "homepage": "https://github.com/Dte-ba/pad-repository"
+}
