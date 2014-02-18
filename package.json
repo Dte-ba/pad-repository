@@ -19,5 +19,10 @@
   "bugs": {
     "url": "https://github.com/Dte-ba/pad-repository/issues"
   },
-  "homepage": "https://github.com/Dte-ba/pad-repository"
+  "homepage": "https://github.com/Dte-ba/pad-repository",
+  "dependencies": {
+    "mkdirp": "~0.3.5",
+    "xregexp": "~2.0.0",
+    "wrench": "~1.5.7"
+  }
 }
