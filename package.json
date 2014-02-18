@@ -1,6 +1,6 @@
 {
   "name": "pad-repository",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Repositorio de paquetes para la plataforma PAD",
   "main": "index.js",
   "scripts": {

@@ -1,0 +1,121 @@
+#!/usr/bin/env node
+
+/*!
+ * Pad Repository
+ *
+ * Copyright(c) 2013-2014 Dirección de Tecnología Educativa de Buenos Aires (Dte-ba)
+ * GPL Plublic License v3
+ */
+
+var fs = require('fs')
+  , repository = require('../lib/pad-repository')
+  , cmd = require('../lib/utils/cmd-prompt')
+  , io = require('../lib/utils/io');
+
+// usage docs
+var usage = [
+    ''
+  , '  PAD repository manager'
+  , ''
+  , '  Usage: pad-repository <command> <path>|<filename>'
+  , ''
+  , '  where <command> is one of:'
+  , '        init cache clear check show watch'
+  , ''
+  , ' Actions:'
+  , ''
+  , '    -v, --version             Display a version of pad-repository'
+  , '    -h, --help                Display this text'
+  , '    -c, --with-create         Create the folder if not exist'
+  , '    -f, --force               Force the command'
+  , ''
+].join('\n');
+
+/**
+ * Input/output path
+ */
+var _path = '.';
+
+/**
+ * An action to call 
+ *    like: init, cache, clear, check
+ */
+var action = ''
+
+/**
+ * Override flag
+ */
+var withForce = false;
+
+/**
+ * With create flag
+ */
+var withCreate = false;
+
+/*
+ * Proccess arguments
+ */
+var args = process.argv.slice(2);
+
+// give me args
+if (!args.length) { cmd.abort(usage); }
+
+// procces args
+var arg;
+while (args.length) {
+  arg = args.shift();
+    switch (arg) {
+    case '-h':
+    case '--help':
+      cmd.abort(usage);
+    case '-v':
+    case '--version':
+      cmd.abort(repository.version);
+      break;
+    case '-f':
+    case '--force':
+      withForce = true;
+      break;
+    case '-c':
+    case '--with-create':
+      withCreate = true;
+      break;
+    case 'init':
+      action = 'init';
+      break;
+    default:
+      _path = arg;
+  }
+}
+
+
+// check the action
+if ( !(/^(init|cache|clear|check|show|watch)$/i).test(action) ) {
+  console.log('the action `' + action + '` was not found.');
+  cmd.abort(usage);
+}
+
+// options
+var options = {
+  action: action
+  , path: _path 
+  , withForce: withForce
+};
+
+// just do it
+(function(repo, ops){
+
+  var action = ops.action,
+      _path = ops.path;
+
+  switch (action) {
+  case 'init':
+    if (!io.emptyDirectorySync(_path)) {
+      cmd.abort('The folder `' + _path + '` is not empty.' );  
+    }
+  break;
+  default:
+    cmd.abort('Oop! the action `' + action + '` was not expected.');
+  }
+
+})(repository, options)
