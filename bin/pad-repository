@@ -26,10 +26,11 @@ var usage = [
   , ''
   , '    -v, --version             Display a version of pad-repository'
   , '    -h, --help                Display this text'
-  , '    -c, --with-create         Create the folder if not exist'
   , '    -f, --force               Force the command'
   , ''
 ].join('\n');
+
+var _init = new Date();
 
 /**
  * Input/output path
@@ -46,11 +47,6 @@ var action = ''
  * Override flag
  */
 var withForce = false;
-
-/**
- * With create flag
- */
-var withCreate = false;
 
 /*
  * Proccess arguments
@@ -76,18 +72,16 @@ while (args.length) {
     case '--force':
       withForce = true;
       break;
-    case '-c':
-    case '--with-create':
-      withCreate = true;
-      break;
     case 'init':
       action = 'init';
+      break;
+    case 'check':
+      action = 'check';
       break;
     default:
       _path = arg;
   }
 }
-
 
 // check the action
 if ( !(/^(init|cache|clear|check|show|watch)$/i).test(action) ) {
@@ -105,17 +99,42 @@ var options = {
 // just do it
 (function(repo, ops){
 
+  // the function will be executed
+  // if something wrong abort with a Unexpected error
+  var befn = function() {
+    cmd.abort('Unexpected error.');
+  };
+
+  // the ending function
+  var endfn = function(err) { 
+     if (err) {
+        cmd.abort(err); 
+     }
+     
+     var _ends = new Date();
+     var diff = _ends - _init;
+
+     console.log('');
+     console.log('complete on', diff, 'miliseconds');
+  };
+
   var action = ops.action,
-      _path = ops.path;
+      opsP = {};
+
+  opsP.path = ops.path;
+  opsP.withForce = ops.withForce;
 
   switch (action) {
   case 'init':
-    if (!io.emptyDirectorySync(_path)) {
-      cmd.abort('The folder `' + _path + '` is not empty.' );  
-    }
+    befn = repo.init;
+  break;
+  case 'check':
+    befn = repo.check;
   break;
   default:
     cmd.abort('Oop! the action `' + action + '` was not expected.');
   }
 
+  befn.apply(repo, [opsP, endfn]);
+  
 })(repository, options)
