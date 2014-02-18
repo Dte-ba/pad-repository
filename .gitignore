@@ -15,4 +15,5 @@ npm-debug.log
 node_modules
 test/cases/output
 test/cases/right/*
+test/cases/wrong/*
 test/output

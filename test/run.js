@@ -5,6 +5,7 @@ var fs = require('fs')
   , padRepo = require('../')
   , assert = require('assert')
   , should = require('should')
+  , wrench = require('wrench')
   ;
 
 var rightPackages = './test/cases/right'
@@ -86,4 +87,25 @@ describe('Pad-Repository', function() {
       })
 
     })
+
+    // crash a package
+    describe('#add()', function() {
+
+      before(function(done){
+        // copy wrong packages
+        ncp(wrongPackages, './test/output/repo/data', function (err) {
+         if (err) throw err;
+         done();
+        });
+      });
+
+      it('now should show add with without errors when a wrong package is added', function(done){
+        padRepo.add({path: './test/output/repo'}, function(err, data){
+          if (err) throw err;
+          done();
+        });
+      })
+
+    })
+
 })
