@@ -9,7 +9,8 @@
 var fs = require('fs')
   , repository = require('../lib/pad-repository')
   , cmd = require('../lib/utils/cmd-prompt')
-  , io = require('../lib/utils/io');
+  , io = require('../lib/utils/io')
+  ;
 
 // usage docs
 var usage = [
@@ -19,7 +20,7 @@ var usage = [
   , '  Usage: repopad <command> <path>|<filename>'
   , ''
   , '  where <command> is one of:'
-  , '        init cache clear check show watch status add'
+  , '        init cache clear check show watch status add find'
   , ''
   , ' Actions:'
   , ''
@@ -63,6 +64,11 @@ var bufferSize = 5;
  * Serve port
  */
 var port = 5;
+
+/**
+ * To Find
+ */
+var toFind = 5;
 
 /*
  * Proccess arguments
@@ -128,6 +134,12 @@ while (args.length) {
         ? (port = parseInt(args.shift()))
         : cmd.abort('serve requires an argument (port)');
       break;
+    case 'find':
+      action = 'find';
+      (args.length) 
+        ? (toFind = args.shift())
+        : cmd.abort('find requires an argument (word)');
+      break;
     default:
       _path = arg;
   }
@@ -146,7 +158,8 @@ var options = {
   withForce: withForce,
   bufferSize: bufferSize,
   withCreate: withCreate,
-  port: port
+  port: port,
+  find: toFind
 };
 
 // just do it
