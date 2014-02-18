@@ -23,6 +23,7 @@
   "dependencies": {
     "mkdirp": "~0.3.5",
     "xregexp": "~2.0.0",
-    "wrench": "~1.5.7"
+    "wrench": "~1.5.7",
+    "unzip": "~0.1.9"
   }
 }

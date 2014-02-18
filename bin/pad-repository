@@ -78,6 +78,9 @@ while (args.length) {
     case 'check':
       action = 'check';
       break;
+    case 'watch':
+      action = 'watch';
+      break;
     default:
       _path = arg;
   }
@@ -130,6 +133,9 @@ var options = {
   break;
   case 'check':
     befn = repo.check;
+  break;
+  case 'watch':
+    befn = repo.watch;
   break;
   default:
     cmd.abort('Oop! the action `' + action + '` was not expected.');
