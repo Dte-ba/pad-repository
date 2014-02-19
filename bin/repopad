@@ -20,7 +20,7 @@ var usage = [
   , '  Usage: repopad <command> <path>|<filename>'
   , ''
   , '  where <command> is one of:'
-  , '        init cache clear check show watch status add find'
+  , '        init cache restore check show watch status add find'
   , ''
   , ' Actions:'
   , ''
@@ -116,8 +116,8 @@ while (args.length) {
     case 'cache':
       action = 'cache';
       break;
-    case 'clear':
-      action = 'clear';
+    case 'restore':
+      action = 'restore';
       break;
     case 'show':
       action = 'show';
@@ -146,7 +146,7 @@ while (args.length) {
 }
 
 // check the action
-if ( !(/^(init|cache|clear|check|show|watch|status|add|serve)$/i).test(action) ) {
+if ( !(/^(init|cache|check|show|watch|status|add|serve|restore)$/i).test(action) ) {
   console.log('the action `' + action + '` was not found.');
   cmd.abort(usage);
 }

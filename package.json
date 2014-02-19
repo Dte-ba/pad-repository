@@ -1,6 +1,6 @@
 {
   "name": "pad-repository",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Repositorio de paquetes para la plataforma PAD",
   "main": "index.js",
   "scripts": {
@@ -29,7 +29,8 @@
     "chokidar": "~0.8.1",
     "underscore": "~1.6.0",
     "custom-logger": "~0.2.1",
-    "adm-zip": "~0.4.4"
+    "adm-zip": "~0.4.4",
+    "rimraf": "~2.2.6"
   },
   "devDependencies": {
     "express": "~3.4.8",
